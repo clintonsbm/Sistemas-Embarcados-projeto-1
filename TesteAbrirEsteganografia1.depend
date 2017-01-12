@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1484180667 source:c:\users\clint\documents\projetos codeblocks\testeabriresteganografia1\readmsg.c
+	<stdio.h>
+	"stego.h"
+
+1484176810 c:\users\clint\documents\projetos codeblocks\testeabriresteganografia1\stego.h
+	<stdio.h>
+
+1484180547 source:c:\users\clint\documents\projetos codeblocks\testeabriresteganografia1\stego.c
+	<stdio.h>
+	<stdlib.h>
+	"stego.h"
+
+1484182428 source:c:\users\clint\documents\projetos codeblocks\testeabriresteganografia1\writemsg.c
+	<stdio.h>
+	"stego.h"
+
