@@ -9,7 +9,7 @@ void die(char* reason);
 int read_ppm_type(FILE *);
 //Skips past the comments in the file
 void skip_comments(FILE *);
-//Get's the width of the image
+//Get's the width of the image 
 int get_width(FILE *);
 //Get's the height of the image
 int get_height(FILE *);

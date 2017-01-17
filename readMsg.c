@@ -1,32 +1,34 @@
-
 #include <stdio.h>
 #include "stego.h"
+#include <stdlib.h>
 
 int get_msg_length(FILE *);
 void decode_message(int, FILE *);
 
 int main(int argc, char **argv) {
-
   FILE *fp;
-
+  printf("\nStart reading.\n\n");
   //Print an error if no args provided
-  if((fp = fopen("out.ppm", "rb")) == NULL) {
+  if((fp = fopen(argv[1], "rb")) == NULL) {
     printf("\nError: Please provide a file to scan.\n\n");
     return 1;
+
   }
 
   if(read_ppm_type(fp)) {
     skip_comments(fp);
     get_width(fp);
     get_height(fp);
-    if(read_color_depth(fp)) {
-      int length = get_msg_length(fp);
-
+    if(read_color_depth(fp)) { 
+//      int length = get_msg_length(fp);
+	  char *len = (char *)argv[2]; 
+      int length = atoi(len);     
+	  printf("%d", length);
       printf("\nHoly secret message batman! We cracked the code: \n");
       decode_message(length, fp);
 
       fclose(fp);
-
+     
     } else {
       printf("Error: Invalid Color Depth.");
       return 1;
@@ -50,7 +52,7 @@ int get_msg_length(FILE *fp) {
     if(i > 0) length <<= 1;
     length |= (temp & 1);
   }
-
+	printf("%d", length);
     return length;
 }
 
@@ -60,9 +62,9 @@ void decode_message(int length, FILE *fp) {
   char temp;
   char secret_message[length + 1];
   int idx = 0;
-
+  
   while(numRead <= readTo) {
-    temp = fgetc(fp);
+    temp = fgetc(fp); 
     if(numRead % 8 == 0) {
       secret_message[idx] = charBuffer;
       idx++;
@@ -73,9 +75,9 @@ void decode_message(int length, FILE *fp) {
     charBuffer |= (temp & 1);
     numRead++;
   }//end while
-
+  
   //Start printing from character 1 because the first char is junk
-  for(i = 1; i < idx; i++) {
+  for(i = 2; i < idx; i++) {
     printf("%c", secret_message[i]);
   }
 
