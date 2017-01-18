@@ -1,4 +1,4 @@
-#include <stdio.h> 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "stego.h"
@@ -11,7 +11,7 @@ void die(char* reason){
 
 //Returns 1 if P6, else returns 0
 int read_ppm_type(FILE *fp) {
-  char temp = fgetc(fp); 
+  char temp = fgetc(fp);
   if(temp == 'P' && fgetc(fp) == '6') {
     fgetc(fp);
     return 1;
@@ -23,14 +23,14 @@ int read_ppm_type(FILE *fp) {
 void skip_comments(FILE *fp) {
   char temp;
   while((temp = fgetc(fp)) == '#') {
-	printf("First while skipping\n");
+	//printf("First while skipping\n");
     while(fgetc(fp) != '\n') {
-		printf("Second while skipping\n");	
+		//printf("Second while skipping\n");	
 	}
   }
 
   //Give back the first character of width that we took
-  ungetc(temp, fp); 
+  ungetc(temp, fp);
 
   return;
 }
@@ -53,7 +53,7 @@ int read_color_depth(FILE *fp) {
   int c;
   fscanf(fp, "%d", &c);
   if(c == 255) {
-    fgetc(fp);    //Get rid of the trailing whitespace 
+    fgetc(fp);    //Get rid of the trailing whitespace
     return 1;
   }
   return 0;

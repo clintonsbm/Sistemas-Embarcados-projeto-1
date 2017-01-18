@@ -146,7 +146,7 @@ void encode_length(FILE *in, FILE *out, int length) {
 
   printf("\nEncoding length\n");
 
-  //Encodes the message leng on the first byte ******
+  //Encodes the message length on the first byte ******
   //(l & 1) is the operator AND in binari
   for(i = 0; i < 8; i++) {
       temp = fgetc(in);
