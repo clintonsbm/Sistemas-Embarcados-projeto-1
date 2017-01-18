@@ -52,10 +52,10 @@ int main(int argc, char **argv) {
         //Creates output file
       	FILE *fp_t = fopen("out.ppm","w");
 
-        //
-      	int i = count_new_lines(fp);
+        //In function
+        int i = count_new_lines(fp);
 
-        //
+        //In function
       	copy_header(fp, i, fp_t);
         encode_length(fp, fp_t, (message_length - 8) / 8);
       	encode_message(fp, fp_t, (message_length - 8), myMessage, w, h);
