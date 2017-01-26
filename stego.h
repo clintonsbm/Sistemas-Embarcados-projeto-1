@@ -6,14 +6,14 @@
 //Program killer
 void die(char* reason);
 //Check that the file is P6 format
-int read_ppm_type(FILE *);
+int read_ppm_type(char *);
 //Skips past the comments in the file
-void skip_comments(FILE *);
+void skip_comments(char *);
 //Get's the width of the image 
-int get_width(FILE *);
+int get_width(char *);
 //Get's the height of the image
-int get_height(FILE *);
+int get_height(char *);
 //Returns 1 if 255, else returns 0
-int read_color_depth(FILE *);
+int read_color_depth(char *);
 
 #endif

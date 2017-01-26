@@ -1,12 +1,22 @@
+/* 
+ * File:   writeMsg.c
+ * Author: LiveG
+ *
+ * Created on 25 de Janeiro de 2017, 17:08
+ */
+#include <stdlib.h>
 #include <stdio.h>
 #include "stego.h"
 
-void copy_header(FILE *, int, FILE *);
+#include <xc.h>
+#include <plib/usart.h>
+
+void copy_header(char *, int, char *);
 int get_message_length(char[]);
 int message_fits(int, int, int);
-int count_new_lines(FILE *);
-void encode_length(FILE *, FILE *, int);
-void encode_message(FILE *, FILE *, int, char *, int, int);
+int count_new_lines(char *);
+void encode_length(char *, char *, int);
+void encode_message(char *, char *, int, char *, int, int);
 
 int main(int argc, char **argv) {
 
@@ -16,9 +26,9 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  FILE *fp;
+  char *fp;
   //If the program couldn't open the file returns 1 and stop
-  if((fp = fopen(argv[2], "r+")) == NULL) {
+  if((fp = OpenUSART(argv[2], "r+")) == NULL) {
     printf("Could not open file %s.\nAborting\n", argv[2]);
     return 1;
   }
@@ -50,7 +60,8 @@ int main(int argc, char **argv) {
       //The algorithm is prepared to handle with Direct Colors (8 bits images)
       if(read_color_depth(fp)) {
         //Creates output file
-      	FILE *fp_t = fopen("out.ppm","w");
+      	//FILE *fp_t = OpenUSART("out.ppm","w");
+		char *fp_t = OpenUSART(argv[2], "r+");
 
         //In function
         int i = count_new_lines(fp);
@@ -66,8 +77,8 @@ int main(int argc, char **argv) {
       	fclose(fp);
       	fclose(fp_t);
       } else {
-	        printf("\nError: Image color depth invalid. Must be 255.\n");
-	        return 1;
+	printf("\nError: Image color depth invalid. Must be 255.\n");
+	return 1;
       }
     } else {
       printf("\nError: Image file is not large enough to hold the message.\n\nAborting.\n");
@@ -80,7 +91,7 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-void copy_header(FILE *fp1, int numLines, FILE *fp2) {
+void copy_header(char *fp1, int numLines, char *fp2) {
   int i;
   char temp;
 
@@ -91,10 +102,10 @@ void copy_header(FILE *fp1, int numLines, FILE *fp2) {
 
   //Copies the header of the file
   for(i = 0; i < numLines; i++) {
-    while((temp = fgetc(fp1)) != EOF && temp != '\n') {
-      fputc(temp, fp2);
+    while((temp = ReadUSART(fp1)) != EOF && temp != '\n') {
+      WriteUSART(temp, fp2);
     }
-    fputc('\n', fp2);
+    WriteUSART('\n', fp2);
   }
 
   //printf("\nEnded copy_header\n\n");
@@ -119,14 +130,14 @@ int message_fits(int length, int w, int h) {
 }
 
 //Count new lines on the header******
-int count_new_lines(FILE *fp) {
+int count_new_lines(char *fp) {
   char temp;
   int count = 0;
 
   //Goes back to the beginning of the file
   rewind(fp);
 
-  while((temp = fgetc(fp)) != EOF) {
+  while((temp = ReadUSART(fp)) != EOF) {
 	//printf("%d", count);
 	if (count == 4) {
       return count;
@@ -140,7 +151,7 @@ int count_new_lines(FILE *fp) {
 }
 
 //
-void encode_length(FILE *in, FILE *out, int length) {
+void encode_length(char *in, char *out, int length) {
   char temp;
   int i, l;
 
@@ -149,7 +160,7 @@ void encode_length(FILE *in, FILE *out, int length) {
   //Encodes the message length on the first byte ******
   //(l & 1) is the operator AND in binari
   for(i = 0; i < 8; i++) {
-      temp = fgetc(in);
+      temp = ReadUSART(in);
       l = length;
       l >>= 7 - i;
       if((l & 1) == 1) {
@@ -161,14 +172,15 @@ void encode_length(FILE *in, FILE *out, int length) {
       	  temp--;
       	}
       }
-    fputc(temp, out);
+    WriteUSART(temp, out);
   }
+
   printf("%d", length);
 
   return;
 }
 
-void encode_message(FILE *in, FILE *out, int num_to_encode, char* my_message, int w, int h) {
+void encode_message(char *in, char *out, int num_to_encode, char* my_message, int w, int h) {
   int encoded = 0;
   unsigned char temp;
   int idx = 0, num_coppied = 0;
@@ -182,7 +194,7 @@ void encode_message(FILE *in, FILE *out, int num_to_encode, char* my_message, in
   //Starts encoding the message by going char by char of the file and changing
   //the less significant bit
   for(i = 0; i < fileSize; i++) {
-    temp = fgetc(in);
+    temp = ReadUSART(in);
     current = my_message[idx];
 
     current >>= 7 - num_coppied;
@@ -205,7 +217,7 @@ void encode_message(FILE *in, FILE *out, int num_to_encode, char* my_message, in
       }
     }
 
-    fputc(temp, out);
+    WriteUSART(temp, out);
   }
 
   return;

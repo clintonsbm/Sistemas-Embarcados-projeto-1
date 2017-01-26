@@ -10,22 +10,22 @@ void die(char* reason){
 }
 
 //Returns 1 if P6, else returns 0
-int read_ppm_type(FILE *fp) {
-  char temp = fgetc(fp);
-  if(temp == 'P' && fgetc(fp) == '6') {
-    fgetc(fp);
+int read_ppm_type(char *fp) {
+  char temp = ReadUSART(fp);
+  if(temp == 'P' && ReadUSART(fp) == '6') {
+    ReadUSART(fp);
     return 1;
   }
 
   return 0;
 }
 
-void skip_comments(FILE *fp) {
+void skip_comments(char *fp) {
   char temp;
-  while((temp = fgetc(fp)) == '#') {
+  while((temp = ReadUSART(fp)) == '#') {
 	//printf("First while skipping\n");
-    while(fgetc(fp) != '\n') {
-		//printf("Second while skipping\n");	
+    while(ReadUSART(fp) != '\n') {
+		//printf("Second while skipping\n");
 	}
   }
 
@@ -36,24 +36,25 @@ void skip_comments(FILE *fp) {
 }
 
 //Returns the width of the image
-int get_width(FILE *fp) {
+int get_width(char *fp) {
   int w;
   fscanf(fp, "%d", &w);
   return w;
 }
 
 //Returns the height of the image
-int get_height(FILE *fp) {
+int get_height(char *fp) {
   int h;
   fscanf(fp, "%d", &h);
   return h;
 }
+
 //Reads the color depth, returns 1 if 255, else returns 0
-int read_color_depth(FILE *fp) {
+int read_color_depth(char *fp) {
   int c;
   fscanf(fp, "%d", &c);
   if(c == 255) {
-    fgetc(fp);    //Get rid of the trailing whitespace
+    ReadUSART(fp);    //Get rid of the trailing whitespace
     return 1;
   }
   return 0;
