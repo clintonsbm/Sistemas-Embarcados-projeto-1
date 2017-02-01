@@ -5723,7 +5723,15 @@ extern __nonreentrant void _delaywdt(unsigned long);
 #pragma intrinsic(_delay3)
 extern __nonreentrant void _delay3(unsigned char);
 
+
 # 14 "writeMsg.c"
+#pragma config FOSC = HS
+#pragma config WDT = OFF
+#pragma config WDTPS = 32768
+#pragma config PBADEN = OFF
+#pragma config MCLRE = OFF
+
+
 void copy_header(char *, int, char *);
 int get_message_length(char[]);
 int message_fits(int, int, int);
@@ -5737,19 +5745,35 @@ continue;
 TXREG = data;
 }
 
-void init_uart(void) {
-TXSTAbits.TXEN = 1;
-RCSTAbits.SPEN = 1;
+void UART_Init(const long int baudrate){
+unsigned int x;
+x = (8000000/baudrate/64) - 1;
+
+SPBRG = x;
+SYNC = 0;
+SPEN = 1;
+TRISC7 = 1;
+TRISC6 = 1;
+CREN = 1;
+TXEN = 1;
 }
 
-# 38
 int main(int argc, char **argv) {
 
-# 54
-init_uart();
-printf("Start project\n");
+# 63
+UART_Init(9600);
 
-# 74
+printf("Start.\n");
+
+char *myFileChars;
+myFileChars = "ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ   ²²³²²³²²³   ²²³   ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ         ???      ²²³²²³   ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ         ???         ²²³²²³ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ         ???               ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ         ???               ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ      ???      ??????      ???   ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ            OOOOOOOOO   OOOOOO      ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ      ???   jlljlljll   jlljll   ???   ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ         jll         ²²³      jll???   ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ                  ???            jll      ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ         OOOOOOjlljll         ???jll      ÿÿÿÿÿÿ         ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ   jlljll???????????????jlljllÿÿÿÿÿÿ      jlljllÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ                                 ÿÿÿÿÿÿ   jlljlljllÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ               ???²²³²²³²²³OOO            ÿÿÿÿÿÿjlljll   ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ      ?????????OOO???OOOOOOOOOOOOOOOOOO??????      jlljllÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ   ??????      OOO???OOOOOOOOO???OOOOOO            jlljllÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ   OOOOOOOOO                           OOOOOO   OOO      ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ   OOOOOOOOOjll   OOO                  jllOOOOOOOOOOOOÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ      OOOOOOOOOjll   OOOÿ#               jll   OOOOOO   ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ      jll            OOO                              ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ      jlljll            OOOOOOOOOOOO                  ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ      jll         ²²³ÿ#   OOOOOO   k× OOO            ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÇÆÿÇÆÿÿÿ   jll      jll                                    ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ#ÿ#ÿ#   jll      jll      OOOOOOOOO                     ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÇÆÿ#ÿ#ÿ#               jll   OOO         OOO      jll            ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÇÆÿ#ÿÿÿÿ#ÿÿÿ                        OOO                  jll            ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÇÆÿ#ÿÿÿÿ#ÿÇÆÿÿÿ                           OOO   OOO                        ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÇÆÿÿÿÿ#ÿÇÆÿÿÿÿÿÿ                  jll         OOO   OOO   OOO                  ÿÿÿÿÿÿÿÿÿÿÿÿÿÇÆÿ#ÿ#ÿÇÆÿÿÿÿÿÿÿÿÿ                  jllOOOOOO   OOO   OOO      OOOOOO            ÿÿÿÿÿÿÿÿÿÿÿÿÿ#ÿ#ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ         ÿÿÿÿÿÿ                                       ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ";
+
+# 76
+char *myMessage = "teste";
+encode_message(myFileChars, 5, myMessage);
+
+printf("Encoding Process Complete    ");
+
 return 0;
 }
 
@@ -5762,7 +5786,7 @@ char current;
 int fileSize = sizeof(*fileChars);
 int i;
 
-printf("\nEncoding message\n");
+printf(" COMECOU ");
 
 
 
@@ -5790,9 +5814,10 @@ num_coppied = 0;
 }
 }
 
-WriteUSART(temp);
-}
 
+sprintf("%s", &temp);
+}
+printf(" ACABOU ");
 return;
 }
 
