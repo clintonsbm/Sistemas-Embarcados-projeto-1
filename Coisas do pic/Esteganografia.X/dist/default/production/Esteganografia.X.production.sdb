@@ -5,8 +5,8 @@
 [d frameptr 4065 ]
 "8 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\aldiv.c
 [v ___aldiv __aldiv `(l  1 e 4 0 ]
-"458 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\doprnt.c
-[v __doprnt _doprnt `(i  1 e 2 0 ]
+"464 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\doprnt.c
+[v _printf printf `(i  1 e 2 0 ]
 "62 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\float.c
 [v ___ftpack __ftpack `(f  1 e 3 0 ]
 "86 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\ftadd.c
@@ -17,8 +17,10 @@
 [v ___ftmul __ftmul `(f  1 e 3 0 ]
 "20 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\ftsub.c
 [v ___ftsub __ftsub `(f  1 e 3 0 ]
-"13 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\printf.c
-[v _printf printf `(i  1 e 2 0 ]
+"8 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\lwdiv.c
+[v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
+"8 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\lwmod.c
+[v ___lwmod __lwmod `(ui  1 e 2 0 ]
 "10 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\sprcadd.c
 [v ___fladd __fladd `(d  1 e 3 0 ]
 "245
@@ -27,20 +29,20 @@
 [v ___fldiv __fldiv `(d  1 e 3 0 ]
 "8 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\sprcmul.c
 [v ___flmul __flmul `(d  1 e 3 0 ]
-"13 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\sprintf.c
-[v _sprintf sprintf `(i  1 e 2 0 ]
+"4 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\strlen.c
+[v _strlen strlen `(ui  1 e 2 0 ]
 "15 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\Umul32.c
 [v ___lmul __lmul `(ul  1 e 4 0 ]
-"15 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\pic18\plib\USART\uread.c
-[v _ReadUSART ReadUSART `(i  1 e 2 0 ]
-"28 C:\Users\clint\MPLABXProjects\Esteganografia.X\writeMsg.c
+"25 C:\Users\clint\MPLABXProjects\Esteganografia.X\readWriteMsg.c
 [v _putch putch `(v  1 e 1 0 ]
-"34
+"31
 [v _UART_Init UART_Init `(v  1 e 1 0 ]
-"47
+"44
+[v _UART_Stop UART_Stop `(v  1 e 1 0 ]
+"54
 [v _main main `(i  1 e 2 0 ]
-"84
-[v _encode_message encode_message `(v  1 e 1 0 ]
+"125
+[v _decode_message decode_message `(v  1 e 1 0 ]
 [s S21 . 1 `uc 1 TMR1IF 1 0 :1:0 
 `uc 1 TMR2IF 1 0 :1:1 
 `uc 1 CCP1IF 1 0 :1:2 
@@ -75,93 +77,107 @@
 [v _TRISC7 TRISC7 `VEb  1 e 0 @31911 ]
 "10168
 [v _TXEN TXEN `VEb  1 e 0 @32101 ]
-"47 C:\Users\clint\MPLABXProjects\Esteganografia.X\writeMsg.c
+"354 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\doprnt.c
+[v _dpowers dpowers `C[5]ui  1 s 10 dpowers ]
+"54 C:\Users\clint\MPLABXProjects\Esteganografia.X\readWriteMsg.c
 [v _main main `(i  1 e 2 0 ]
 {
-"76
-[v main@myMessage myMessage `*.25uc  1 a 2 48 ]
-"67
-[v main@myFileChars myFileChars `*.25uc  1 a 2 46 ]
-"82
+"63
+[v main@fileCharsEncoded fileCharsEncoded `[1992]uc  1 s 1992 fileCharsEncoded ]
+"80
 } 0
-"84
-[v _encode_message encode_message `(v  1 e 1 0 ]
+"125
+[v _decode_message decode_message `(v  1 e 1 0 ]
 {
-"87
-[v encode_message@num_coppied num_coppied `i  1 a 2 38 ]
-"91
-[v encode_message@i i `i  1 a 2 35 ]
-"87
-[v encode_message@idx idx `i  1 a 2 33 ]
-"85
-[v encode_message@encoded encoded `i  1 a 2 31 ]
-"90
-[v encode_message@fileSize fileSize `i  1 a 2 29 ]
-"86
-[v encode_message@temp temp `uc  1 a 1 40 ]
-"88
-[v encode_message@current current `uc  1 a 1 37 ]
-"84
-[v encode_message@fileChars fileChars `*.25uc  1 p 2 21 ]
-[v encode_message@num_to_encode num_to_encode `i  1 p 2 23 ]
-[v encode_message@my_message my_message `*.25uc  1 p 2 25 ]
+"130
+[v decode_message@secret_message secret_message `[5]uc  1 a 5 30 ]
 "126
+[v decode_message@numRead numRead `i  1 a 2 45 ]
+[v decode_message@i i `i  1 a 2 43 ]
+"132
+[v decode_message@fileSize fileSize `i  1 a 2 39 ]
+"126
+[v decode_message@readTo readTo `i  1 a 2 37 ]
+"129
+[v decode_message@idx idx `i  1 a 2 35 ]
+"127
+[v decode_message@charBuffer charBuffer `uc  1 a 1 42 ]
+"128
+[v decode_message@temp temp `uc  1 a 1 41 ]
+"125
+[v decode_message@fileChars fileChars `*.39uc  1 p 2 24 ]
+[v decode_message@length length `i  1 p 2 26 ]
+"159
 } 0
-"13 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\sprintf.c
-[v _sprintf sprintf `(i  1 e 2 0 ]
+"4 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\strlen.c
+[v _strlen strlen `(ui  1 e 2 0 ]
 {
-[s S149 __prbuf 4 `*.25uc 1 ptr 2 0 `*.37(v 1 func 2 2 ]
-"29
-[v sprintf@pb pb `S149  1 a 4 17 ]
-"28
-[v sprintf@ap ap `[1]*.39v  1 a 2 15 ]
+"6
+[v strlen@cp cp `*.39Cuc  1 a 2 4 ]
+"4
+[v strlen@s s `*.39Cuc  1 p 2 0 ]
 "13
-[v sprintf@wh wh `*.25uc  1 p 2 11 ]
-[v sprintf@f f `*.39Cuc  1 p 2 13 ]
-"38
 } 0
-"13 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\printf.c
+"464 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\doprnt.c
 [v _printf printf `(i  1 e 2 0 ]
 {
-[s S149 __prbuf 4 `*.25uc 1 ptr 2 0 `*.37(v 1 func 2 2 ]
-"21
-[v printf@pb pb `S149  1 a 4 15 ]
-"15
-[v printf@ap ap `[1]*.39v  1 a 2 13 ]
-"13
-[v printf@f f `*.25Cuc  1 p 2 11 ]
-"28
-} 0
-"458 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\doprnt.c
-[v __doprnt _doprnt `(i  1 e 2 0 ]
-{
+"528
+[v printf@val val `ui  1 a 2 21 ]
+"466
+[v printf@ap ap `[1]*.39v  1 a 2 19 ]
 "499
-[v __doprnt@c c `c  1 a 1 10 ]
+[v printf@c c `c  1 a 1 23 ]
+"506
+[v printf@prec prec `c  1 a 1 18 ]
 "508
-[v __doprnt@flag flag `uc  1 a 1 9 ]
-[s S149 __prbuf 4 `*.25uc 1 ptr 2 0 `*.37(v 1 func 2 2 ]
-"458
-[v __doprnt@pb pb `*.39S149  1 p 2 1 ]
-[v __doprnt@f f `*.35Cuc  1 p 2 3 ]
-[v __doprnt@ap ap `*.39*.39v  1 p 2 5 ]
+[v printf@flag flag `uc  1 a 1 17 ]
+"464
+[v printf@f f `*.25Cuc  1 p 2 12 ]
 "1541
 } 0
-"28 C:\Users\clint\MPLABXProjects\Esteganografia.X\writeMsg.c
+"25 C:\Users\clint\MPLABXProjects\Esteganografia.X\readWriteMsg.c
 [v _putch putch `(v  1 e 1 0 ]
 {
 [v putch@data data `uc  1 a 1 wreg ]
 [v putch@data data `uc  1 a 1 wreg ]
 [v putch@data data `uc  1 a 1 0 ]
-"32
+"29
 } 0
-"34
+"8 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\lwmod.c
+[v ___lwmod __lwmod `(ui  1 e 2 0 ]
+{
+"11
+[v ___lwmod@counter counter `uc  1 a 1 11 ]
+"8
+[v ___lwmod@dividend dividend `ui  1 p 2 7 ]
+[v ___lwmod@divisor divisor `ui  1 p 2 9 ]
+"26
+} 0
+"8 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\lwdiv.c
+[v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
+{
+"11
+[v ___lwdiv@quotient quotient `ui  1 a 2 4 ]
+"12
+[v ___lwdiv@counter counter `uc  1 a 1 6 ]
+"8
+[v ___lwdiv@dividend dividend `ui  1 p 2 0 ]
+[v ___lwdiv@divisor divisor `ui  1 p 2 2 ]
+"31
+} 0
+"44 C:\Users\clint\MPLABXProjects\Esteganografia.X\readWriteMsg.c
+[v _UART_Stop UART_Stop `(v  1 e 1 0 ]
+{
+"52
+} 0
+"31
 [v _UART_Init UART_Init `(v  1 e 1 0 ]
 {
-"35
+"32
 [v UART_Init@x x `ui  1 a 2 22 ]
-"34
+"31
 [v UART_Init@baudrate baudrate `Cl  1 p 4 14 ]
-"45
+"42
 } 0
 "8 C:\Program Files (x86)\Microchip\xc8\v1.40\sources\common\aldiv.c
 [v ___aldiv __aldiv `(l  1 e 4 0 ]
