@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include "stego.h"
+#include <sys/timeb.h>  /* ftime, timeb (for timestamp in millisecond) */
+#include <sys/time.h>   /* gettimeofday, timeval (for timestamp in microsecond) */
+#include <time.h>
+#include <sys/resource.h>
 
 void copy_header(FILE *, int, FILE *);
 int get_message_length(char[]);
@@ -23,7 +27,25 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+  struct rusage r_usage;
+  struct timeval timer_usec2;
+  struct timeval timer_usec;
+  long long int timestamp_usec; 
+
   if(read_ppm_type(fp)) {
+
+    /* Example of timestamp in microsecond. */
+
+         /* timestamp in microsecond */
+         if (!gettimeofday(&timer_usec, NULL)) {
+           timestamp_usec = ((long long int) timer_usec.tv_sec) * 1000000ll + (long long int) timer_usec.tv_usec;
+         }
+         else {
+           timestamp_usec = -1;
+         }
+
+
+
     printf("\nStart aplication!\n");
 
     //Skip comments inside the ppm file
@@ -58,7 +80,10 @@ int main(int argc, char **argv) {
         //In function
       	copy_header(fp, i, fp_t);
         encode_length(fp, fp_t, (message_length - 8) / 8);
+
+
       	encode_message(fp, fp_t, (message_length - 8), myMessage, w, h);
+
 
       	printf("Encoding Process Complete. Take a look at out.ppm\n");
 
@@ -77,6 +102,20 @@ int main(int argc, char **argv) {
     printf("Error: Wrong file format.\n\nAborting\n");
     return 1;
   }
+
+     long long int timestamp_usec2; /* timestamp in microsecond */
+     if (!gettimeofday(&timer_usec2, NULL)) {
+       timestamp_usec2 = ((long long int) timer_usec2.tv_sec) * 1000000ll + (long long int) timer_usec2.tv_usec;
+     }
+     else {
+       timestamp_usec2 = -1;
+     }
+     printf("\n\n%lld microssegundos.\n", timestamp_usec2 - timestamp_usec);
+
+
+     getrusage(RUSAGE_SELF,&r_usage);
+     printf("\n\nMemory usage: %ld bytes\n",r_usage.ru_isrss);
+
   return 0;
 }
 
